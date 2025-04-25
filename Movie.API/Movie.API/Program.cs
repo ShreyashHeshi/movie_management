@@ -1,6 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDBSettings"));
+builder.Services.AddSingleton<IMongoDBContext, MongoDBContext>();
+
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IDirectorRepository, DirectorRepository>();
+
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IDirectorService, DirectorService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

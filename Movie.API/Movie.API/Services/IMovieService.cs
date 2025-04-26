@@ -1,14 +1,15 @@
-﻿using Movie.API.Models;
+﻿using Movie.API.DTOs.Movie;
+using Movie.API.Models;
 
 namespace Movie.API.Services
 {
     public interface IMovieService
     {
-        Task<IEnumerable<Movies>> GetAllMovies();
-        Task<Movies> GetMovieById(string id);
-        Task<IEnumerable<Movies>> GetMoviesByDirector(string directorId);
-        Task<Movies> CreateMovie(Movies movie);
-        Task<bool> UpdateMovie(string id, Movies movie);
+        Task<IEnumerable<MovieResponseDto>> GetAllMovies();
+        Task<MovieResponseDto> GetMovieById(string id);
+        Task<IEnumerable<MovieResponseDto>> GetMoviesByDirector(string directorId);
+        Task<MovieResponseDto> CreateMovie(MovieCreateDto movieCreateDto);
+        Task<bool> UpdateMovie(string id, MovieUpdateDto movieUpdateDto);
         Task<bool> DeleteMovie(string id);
     }
 }

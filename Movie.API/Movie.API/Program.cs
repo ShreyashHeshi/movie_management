@@ -1,3 +1,9 @@
+using Movie.API.Data;
+using Movie.API.Mappings;
+using Movie.API.Models;
+using Movie.API.Repositories;
+using Movie.API.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +15,8 @@ builder.Services.AddScoped<IDirectorRepository, DirectorRepository>();
 
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IDirectorService, DirectorService>();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

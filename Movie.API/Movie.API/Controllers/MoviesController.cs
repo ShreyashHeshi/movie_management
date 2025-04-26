@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Movie.API.DTOs.Movie;
 using Movie.API.Models;
 using Movie.API.Services;
 
@@ -17,14 +18,14 @@ namespace Movie.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<MovieResponseDto>>> GetAll()
         {
             var movies = await _movieService.GetAllMovies();
             return Ok(movies);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<ActionResult<MovieResponseDto>> GetById(string id)
         {
             var movie = await _movieService.GetMovieById(id);
             if (movie == null)
@@ -34,29 +35,29 @@ namespace Movie.API.Controllers
         }
 
         [HttpGet("director/{directorId}")]
-        public async Task<IActionResult> GetByDirector(string directorId)
+        public async Task<ActionResult<IEnumerable<MovieResponseDto>>> GetByDirector(string directorId)
         {
             var movies = await _movieService.GetMoviesByDirector(directorId);
             return Ok(movies);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Movies movie)
+        public async Task<ActionResult<MovieResponseDto>> Create([FromBody] MovieCreateDto movieCreateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var createdMovie = await _movieService.CreateMovie(movie);
+            var createdMovie = await _movieService.CreateMovie(movieCreateDto);
             return CreatedAtAction(nameof(GetById), new { id = createdMovie.Id }, createdMovie);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] Movies movie)
+        public async Task<IActionResult> Update(string id, [FromBody] MovieUpdateDto movieUpdateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _movieService.UpdateMovie(id, movie);
+            var result = await _movieService.UpdateMovie(id, movieUpdateDto);
             if (!result)
                 return NotFound();
 
@@ -72,5 +73,6 @@ namespace Movie.API.Controllers
 
             return NoContent();
         }
+
     }
 }

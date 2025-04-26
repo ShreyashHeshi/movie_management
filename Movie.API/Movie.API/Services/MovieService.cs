@@ -1,19 +1,27 @@
-﻿using Movie.API.Models;
+﻿using Movie.API.DTOs.Movie;
+using Movie.API.Models;
 using Movie.API.Repositories;
+using AutoMapper;
 
 namespace Movie.API.Services
 {
     public class MovieService : IMovieService
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly IMapper _mapper;
 
-        public MovieService(IMovieRepository movieRepository)
+
+        public MovieService(IMovieRepository movieRepository, IMapper mapper)
         {
             _movieRepository = movieRepository;
+            _mapper = mapper;
         }
-        public async Task<Movies> CreateMovie(Movies movie)
+
+        public async Task<MovieResponseDto> CreateMovie(MovieCreateDto movieCreateDto)
         {
-            return await _movieRepository.CreateMovie(movie);
+            var movie = _mapper.Map<Movies>(movieCreateDto);
+            await _movieRepository.CreateMovie(movie);
+            return _mapper.Map<MovieResponseDto>(movie);
         }
 
         public async Task<bool> DeleteMovie(string id)
@@ -21,24 +29,32 @@ namespace Movie.API.Services
             return await _movieRepository.DeleteMovie(id);
         }
 
-        public async Task<IEnumerable<Movies>> GetAllMovies()
+        public async Task<IEnumerable<MovieResponseDto>> GetAllMovies()
         {
-            return await _movieRepository.GetAllMovies();
+            var movies = await _movieRepository.GetAllMovies();
+            return _mapper.Map<IEnumerable<MovieResponseDto>>(movies);
         }
 
-        public async Task<Movies> GetMovieById(string id)
+        public async Task<MovieResponseDto> GetMovieById(string id)
         {
-            return await _movieRepository.GetMovieById(id);
+            var movie = await _movieRepository.GetMovieById(id);
+            return _mapper.Map<MovieResponseDto>(movie);
         }
 
-        public async Task<IEnumerable<Movies>> GetMoviesByDirector(string directorId)
+        public async Task<IEnumerable<MovieResponseDto>> GetMoviesByDirector(string directorId)
         {
-            return await _movieRepository.GetMoviesByDirector(directorId);
+            var movies = await _movieRepository.GetMoviesByDirector(directorId);
+            return _mapper.Map<IEnumerable<MovieResponseDto>>(movies);
         }
 
-        public async Task<bool> UpdateMovie(string id, Movies movie)
+        public async Task<bool> UpdateMovie(string id, MovieUpdateDto movieUpdateDto)
         {
-            return await _movieRepository.UpdateMovie(id, movie);
+            var existingMovie = await _movieRepository.GetMovieById(id);
+            if (existingMovie == null)
+                return false;
+
+            _mapper.Map(movieUpdateDto, existingMovie);
+            return await _movieRepository.UpdateMovie(id, existingMovie);
         }
     }
 }

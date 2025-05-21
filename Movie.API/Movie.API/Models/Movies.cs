@@ -17,7 +17,9 @@ namespace Movie.API.Models
         public DateTime ReleaseDate { get; set; }
         public double Rating { get; set; }
 
-        [BsonIgnore]
+        [BsonIgnore] //we ignore this cause To avoid circular references and bloated data in the DB
         public Director Director { get; set; } // Navigation Property (optional)
+
+        // if we not used navigation properties then Manual joining needed for related data
     }
 }

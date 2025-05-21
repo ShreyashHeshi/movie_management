@@ -11,6 +11,9 @@ namespace Movie.API.Models
         public string Name { get; set; }
         public string Bio { get; set; }
 
+        [BsonIgnoreIfNull]
+        public string Nationality { get; set; }
+
         [BsonIgnore]
         public ICollection<Movies> Movies { get; set; }
     }

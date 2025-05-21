@@ -10,5 +10,6 @@ namespace Movie.API.DTOs.Director
 
         [StringLength(1000, ErrorMessage = "Bio cannot be longer than 1000 characters")]
         public string Bio { get; set; }
+        public string Nationality { get; set; }
     }
 }

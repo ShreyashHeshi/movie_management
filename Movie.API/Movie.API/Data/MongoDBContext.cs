@@ -17,5 +17,7 @@ namespace Movie.API.Data
         public IMongoCollection<Movies> Movies => _database.GetCollection<Movies>("Movies");
 
         public IMongoCollection<Director> Directors => _database.GetCollection<Director>("Directors");
+
+        public IMongoCollection<User> Users => _database.GetCollection<User>("Users");
     }
 }

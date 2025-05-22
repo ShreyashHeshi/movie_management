@@ -7,5 +7,6 @@ namespace Movie.API.Data
     {
         IMongoCollection<Movies> Movies { get; }
         IMongoCollection<Director> Directors { get; }
+        IMongoCollection<User> Users { get; }
     }
 }

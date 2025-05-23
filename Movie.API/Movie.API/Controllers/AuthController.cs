@@ -5,7 +5,10 @@ using Movie.API.Services;
 
 namespace Movie.API.Controllers
 {
-    //[Route("api/[controller]")]
+
+//     [Route("api/[controller]")]
+
+ 
     //[ApiController]
     public class AuthController : ControllerBase
     {

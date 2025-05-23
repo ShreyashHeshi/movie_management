@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Movie.API.DTOs.Movie;
 using Movie.API.Models;
@@ -17,6 +18,7 @@ namespace Movie.API.Controllers
             _movieService = movieService;
         }
 
+        //[Authorize(Roles = "User")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieResponseDto>>> GetAll()
         {
@@ -41,6 +43,7 @@ namespace Movie.API.Controllers
             return Ok(movies);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<MovieResponseDto>> Create([FromBody] MovieCreateDto movieCreateDto)
         {

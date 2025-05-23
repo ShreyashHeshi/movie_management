@@ -22,12 +22,25 @@ namespace Movie.API.Services
         {
             var movie = _mapper.Map<Movies>(movieCreateDto);
             await _movieRepository.CreateMovie(movie);
+
+            // After creating a new movie, refresh the cache
+            var allMovies = await _movieRepository.GetAllMovies();
+            var mappedMovies = _mapper.Map<IEnumerable<MovieResponseDto>>(allMovies);
+            await _cacheService.SetAsync("movies:all", mappedMovies, TimeSpan.FromMinutes(60));
+
             return _mapper.Map<MovieResponseDto>(movie);
         }
 
         public async Task<bool> DeleteMovie(string id)
         {
-            return await _movieRepository.DeleteMovie(id);
+            //return await _movieRepository.DeleteMovie(id);
+            var deletedMovie= await _movieRepository.DeleteMovie(id);
+            if (deletedMovie)
+            {
+                // Invalidate the cached movie list
+                await _cacheService.RemoveAsync("movies:all");
+            }
+            return deletedMovie;
         }
 
         public async Task<IEnumerable<MovieResponseDto>> GetAllMovies()
@@ -73,7 +86,18 @@ namespace Movie.API.Services
                 return false;
 
             _mapper.Map(movieUpdateDto, existingMovie);
-            return await _movieRepository.UpdateMovie(id, existingMovie);
+            //return await _movieRepository.UpdateMovie(id, existingMovie);
+            var updated = await _movieRepository.UpdateMovie(id, existingMovie);
+
+            if (updated)
+            {
+                // Refresh the cached movie list
+                var allMovies = await _movieRepository.GetAllMovies();
+                var mappedMovies = _mapper.Map<IEnumerable<MovieResponseDto>>(allMovies);
+                await _cacheService.SetAsync("movies:all", mappedMovies, TimeSpan.FromMinutes(60));
+            }
+
+            return updated;
         }
     }
 }

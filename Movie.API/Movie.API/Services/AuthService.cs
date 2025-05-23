@@ -44,7 +44,8 @@ namespace Movie.API.Services
             var user = new User
             {
                 Username = request.Username,
-                Email = request.Email
+                Email = request.Email,
+                Role = request.Role ?? "User"
             };
             user.PasswordHash = _hasher.HashPassword(user, request.Password);
 
@@ -62,6 +63,7 @@ namespace Movie.API.Services
             {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 

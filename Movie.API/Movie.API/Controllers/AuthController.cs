@@ -5,7 +5,10 @@ using Movie.API.Services;
 
 namespace Movie.API.Controllers
 {
-    [Route("api/[controller]")]
+
+//     [Route("api/[controller]")]
+
+ 
     //[ApiController]
     public class AuthController : ControllerBase
     {
@@ -16,7 +19,7 @@ namespace Movie.API.Controllers
             _authService = authService;
         }
 
-        [HttpPost("register")]
+        //[HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterRequest request)
         {
             var result = await _authService.RegisterAsync(request);

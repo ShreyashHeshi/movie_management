@@ -9,12 +9,13 @@ namespace Movie.API.Services
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IMapper _mapper;
+        private readonly IRedisCacheService _cacheService;
 
-
-        public MovieService(IMovieRepository movieRepository, IMapper mapper)
+        public MovieService(IMovieRepository movieRepository, IMapper mapper, IRedisCacheService cacheService)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
+            _cacheService = cacheService;
         }
 
         public async Task<MovieResponseDto> CreateMovie(MovieCreateDto movieCreateDto)
@@ -31,8 +32,26 @@ namespace Movie.API.Services
 
         public async Task<IEnumerable<MovieResponseDto>> GetAllMovies()
         {
+            const string cacheKey = "movies:all";
+
+            // Try to get from cache
+            var cachedMovies = await _cacheService.GetAsync<IEnumerable<MovieResponseDto>>(cacheKey);
+            if (cachedMovies != null)
+            {
+                Console.WriteLine("✅ Retrieved movies from Redis cache");
+                return cachedMovies;
+            }
+
+            // If not found in cache, get from DB
+            Console.WriteLine("📦 Retrieved movies from database");
             var movies = await _movieRepository.GetAllMovies();
-            return _mapper.Map<IEnumerable<MovieResponseDto>>(movies);
+            var mappedMovies = _mapper.Map<IEnumerable<MovieResponseDto>>(movies);
+
+            // Cache the result
+            await _cacheService.SetAsync(cacheKey, mappedMovies, TimeSpan.FromMinutes(60));
+            
+
+            return mappedMovies;
         }
 
         public async Task<MovieResponseDto> GetMovieById(string id)

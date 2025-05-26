@@ -5,10 +5,12 @@ using Movie.API.Services;
 
 namespace Movie.API.Controllers
 
+
 {
 
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
+
 
 
     public class AuthController : ControllerBase

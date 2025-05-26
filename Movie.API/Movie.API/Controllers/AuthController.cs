@@ -6,9 +6,9 @@ using Movie.API.Services;
 namespace Movie.API.Controllers
 
 
-{ //get pulled from remote and pushed
+{
 
-    [Route("api/[controller]")]
+    [Route("api/[controller][controller]")]
     [ApiController]
 
 

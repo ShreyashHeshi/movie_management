@@ -18,7 +18,7 @@ namespace Movie.API.Controllers
             _movieService = movieService;
         }
 
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieResponseDto>>> GetAll()
         {

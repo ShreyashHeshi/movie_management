@@ -4,10 +4,13 @@ using Movie.API.DTOs.User;
 using Movie.API.Services;
 
 namespace Movie.API.Controllers
+
 {
 
-     [Route("api/[controller]")]
-     [ApiController]
+    [Route("api/[controller]")]
+    [ApiController]
+
+
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

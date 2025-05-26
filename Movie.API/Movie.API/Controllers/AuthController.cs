@@ -9,10 +9,9 @@ namespace Movie.API.Controllers
 { //get pulled from remote and pushed
 
     [Route("api/[controller]")]
+
+
     [ApiController]
-
-
-
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

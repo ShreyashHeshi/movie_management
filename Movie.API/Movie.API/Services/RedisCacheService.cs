@@ -18,6 +18,11 @@ namespace Movie.API.Services
             return data == null ? default : JsonSerializer.Deserialize<T>(data);
         }
 
+        public async Task RemoveAsync(string key)
+        {
+            await _cache.RemoveAsync(key);
+        }
+
         public async Task SetAsync<T>(string key, T value, TimeSpan? expiration = null)
         {
             var options = new DistributedCacheEntryOptions();

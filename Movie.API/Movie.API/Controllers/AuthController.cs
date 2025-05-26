@@ -8,10 +8,7 @@ namespace Movie.API.Controllers
 
 {
 
-    [Route("api/[controller]")]
-
-
-
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -20,23 +17,14 @@ namespace Movie.API.Controllers
         {
             _authService = authService;
         }
-
-
-
-
         [HttpPost("register")]
-
-
         public async Task<IActionResult> Register(UserRegisterRequest request)
         {
             var result = await _authService.RegisterAsync(request);
             return Ok(result);
         }
 
-
         [HttpPost("login")]
-
-
         public async Task<IActionResult> Login(UserLoginRequest request)
         {
             var result = await _authService.LoginAsync(request);

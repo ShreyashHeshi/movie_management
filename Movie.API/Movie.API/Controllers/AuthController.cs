@@ -13,6 +13,8 @@ namespace Movie.API.Controllers
 
 
    
+
+    [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

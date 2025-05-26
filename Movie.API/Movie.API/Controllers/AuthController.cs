@@ -9,8 +9,6 @@ namespace Movie.API.Controllers
 
     [Route("api/[controller]/[action]")]
     [ApiController]
-
-
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

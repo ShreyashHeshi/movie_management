@@ -8,9 +8,7 @@ namespace Movie.API.Controllers
 
 { //get pulled from remote and pushed
 
-    [Route("api/[controller]")]
-
-
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
